@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Home - AutoRent</title>
+  <style>
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      margin-bottom: 50px;
+      padding: 60px 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 20px;
+      color: white;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .hero-icon {
+      font-size: 80px;
+      margin-bottom: 20px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      margin-bottom: 15px;
+      color: white;
+      font-weight: 800;
+    }
+
+    .hero p {
+      font-size: 20px;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 30px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hero-btn {
+      padding: 14px 30px;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: white;
+      color: #667eea;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(255,255,255,0.3);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: 2px solid white;
+    }
+
+    .btn-secondary:hover {
+      background: white;
+      color: #667eea;
+    }
+
+    /* Section Header */
+    .section-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .section-header h2 {
+      font-size: 36px;
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+
+    .section-header p {
+      font-size: 16px;
+      color: #7f8c8d;
+    }
+
+    /* Cars Grid */
+    .cars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+      margin-bottom: 50px;
+    }
+
+    .car-card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: all 0.3s;
+    }
+
+    .car-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .car-image {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 70px;
+      position: relative;
+    }
+
+    .car-status-badge {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+      backdrop-filter: blur(10px);
+    }
+
+    .status-available {
+      background: rgba(39, 174, 96, 0.9);
+      color: white;
+    }
+
+    .status-rented {
+      background: rgba(231, 76, 60, 0.9);
+      color: white;
+    }
+
+    .status-maintenance {
+      background: rgba(243, 156, 18, 0.9);
+      color: white;
+    }
+
+    .car-content {
+      padding: 25px;
+    }
+
+    .car-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: #2c3e50;
+    }
+
+    .car-detail {
+      color: #7f8c8d;
+      font-size: 15px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .car-price {
+      font-size: 32px;
+      font-weight: 800;
+      color: #27ae60;
+      margin: 20px 0;
+    }
+
+    .car-price small {
+      font-size: 16px;
+      color: #7f8c8d;
+      font-weight: normal;
+    }
+
+    .book-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .book-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .book-btn:disabled {
+      background: #95a5a6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .empty-state-icon {
+      font-size: 100px;
+      margin-bottom: 20px;
+      opacity: 0.5;
+    }
+
+    .empty-state h3 {
+      font-size: 28px;
+      margin-bottom: 15px;
+      color: #2c3e50;
+    }
+
+    .empty-state p {
+      color: #7f8c8d;
+      font-size: 16px;
+    }
+
+    /* Features Section */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin: 60px 0;
+    }
+
+    .feature-card {
+      text-align: center;
+      padding: 30px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .feature-icon {
+      font-size: 50px;
+      margin-bottom: 15px;
+    }
+
+    .feature-card h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+
+    .feature-card p {
+      color: #7f8c8d;
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 32px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .cars-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+      }
+
+      .hero-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<%- include('layout', { body: '' }) %>
+
+<!-- Hero Section -->
+<div class="hero">
+  <div class="hero-icon">🚗</div>
+  <h1>Welcome to AutoRent</h1>
+  <p>Find and rent your perfect car today</p>
+  
+  <div class="hero-buttons">
+    <a href="/cars" class="hero-btn btn-primary">
+      🚙 Browse All Cars
+    </a>
+    <a href="/register" class="hero-btn btn-secondary">
+      ✨ Sign Up Now
+    </a>
+  </div>
+</div>
+
+<!-- Features Section -->
+<div class="features">
+  <div class="feature-card">
+    <div class="feature-icon">⚡</div>
+    <h3>Easy Booking</h3>
+    <p>Book your favorite car in just a few clicks</p>
+  </div>
+  
+  <div class="feature-card">
+    <div class="feature-icon">💰</div>
+    <h3>Best Prices</h3>
+    <p>Competitive rates and transparent pricing</p>
+  </div>
+  
+  <div class="feature-card">
+    <div class="feature-icon">🔒</div>
+    <h3>Secure & Safe</h3>
+    <p>Your data and payments are fully protected</p>
+  </div>
+  
+  <div class="feature-card">
+    <div class="feature-icon">📞</div>
+    <h3>24/7 Support</h3>
+    <p>We're here to help you anytime, anywhere</p>
+  </div>
+</div>
+
+<!-- Featured Cars Section -->
+<div class="section-header">
+  <h2>🌟 Featured Cars</h2>
+  <p>Check out our most popular rental cars</p>
+</div>
+
+<% if (cars && cars.length > 0) { %>
+  <div class="cars-grid">
+    <% cars.slice(0, 6).forEach(car => { %>
+      <div class="car-card">
+        <div class="car-image">
+          🚗
+          <span class="car-status-badge status-<%= car.status.toLowerCase() %>">
+            <%= car.status %>
+          </span>
+        </div>
+        
+        <div class="car-content">
+          <div class="car-title"><%= car.brand %> <%= car.model %></div>
+          
+          <div class="car-detail">
+            🔑 <strong>Plate:</strong> <%= car.licensePlate %>
+          </div>
+          
+          <div class="car-detail">
+            📅 <strong>Year:</strong> <%= car.year || 'N/A' %>
+          </div>
+          
+          <div class="car-price">
+            $<%= car.pricePerDay %>
+            <small>/ day</small>
+          </div>
+          
+          <% if (car.status === 'AVAILABLE') { %>
+            <a href="/booking/<%= car._id %>" class="book-btn">
+              📅 Book Now
+            </a>
+          <% } else { %>
+            <button class="book-btn" disabled>
+              ⛔ Not Available
+            </button>
+          <% } %>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+  
+  <% if (cars.length > 6) { %>
+    <div style="text-align: center; margin-top: 30px;">
+      <a href="/cars" class="hero-btn btn-primary">
+        View All <%= cars.length %> Cars →
+      </a>
+    </div>
+  <% } %>
+<% } else { %>
+  <!-- Empty State -->
+  <div class="empty-state">
+    <div class="empty-state-icon">🚗</div>
+    <h3>No Cars Available</h3>
+    <p>Please run <code>npm run seed</code> to create demo cars.</p>
+  </div>
+<% } %>
+
+</body>
+</html>

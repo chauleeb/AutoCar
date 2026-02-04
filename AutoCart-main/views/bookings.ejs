@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>All Bookings - AutoRent</title>
+  <style>
+    .page-header {
+      margin-bottom: 30px;
+    }
+
+    .page-header h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .page-header p {
+      color: #7f8c8d;
+      font-size: 16px;
+    }
+
+    .bookings-table {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background: #34495e;
+      color: white;
+    }
+
+    th {
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    td {
+      padding: 15px;
+      border-bottom: 1px solid #ecf0f1;
+    }
+
+    tbody tr:hover {
+      background: #f8f9fa;
+    }
+
+    .status-badge {
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .status-pending {
+      background: #f39c12;
+      color: white;
+    }
+
+    .status-confirmed {
+      background: #3498db;
+      color: white;
+    }
+
+    .status-active {
+      background: #27ae60;
+      color: white;
+    }
+
+    .status-completed {
+      background: #95a5a6;
+      color: white;
+    }
+
+    .status-cancelled {
+      background: #e74c3c;
+      color: white;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #7f8c8d;
+    }
+
+    .empty-state-icon {
+      font-size: 60px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .bookings-table {
+        overflow-x: auto;
+      }
+
+      table {
+        min-width: 800px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <%- include('layout', { body: '' }) %>
+
+    <div class="page-header">
+      <h1>📅 All Bookings</h1>
+      <p>View all car rental bookings in the system</p>
+    </div>
+
+    <div class="bookings-table">
+      <!-- Loading -->
+      <div id="loading" style="text-align: center; padding: 40px;">
+        <p>⏳ Loading bookings...</p>
+      </div>
+
+      <!-- Table container -->
+      <div id="table-container" class="bookings-table" style="display: none;">
+        <table>
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>Customer</th>
+              <th>Car</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+              <th>Total Price</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="bookings-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- Empty state -->
+      <div id="empty-state" style="display: none; text-align: center; padding: 60px;">
+        <div style="font-size: 60px; margin-bottom: 20px;">📋</div>
+        <h3>No bookings found</h3>
+        <p>There are no bookings in the system yet.</p>
+      </div>
+
+      <script>
+        // Fetch all bookings
+        fetch('/api/v1/admin/bookings/summary')  // Hoặc tạo API mới GET /api/v1/bookings
+          .then(response => response.json())
+          .then(result => {
+            document.getElementById('loading').style.display = 'none';
+
+            // Admin API trả về result.data.recentBookings
+            const bookings = result.data.recentBookings || [];
+
+            if (bookings.length > 0) {
+              const html = bookings.map(b => `
+          <tr>
+            <td>#${b._id.toString().slice(-6)}</td>
+            <td>${b.userId?.name || 'N/A'}</td>
+            <td>${b.carId?.brand} ${b.carId?.model}</td>
+            <td>${new Date(b.startDate).toLocaleDateString()}</td>
+            <td>${new Date(b.endDate).toLocaleDateString()}</td>
+            <td>$${b.totalPrice}</td>
+            <td>
+              <span class="status-badge status-${b.status.toLowerCase()}">
+                ${b.status}
+              </span>
+            </td>
+            <td>
+          <a href="/booking-detail?id=${b._id}" class="btn" style="padding: 6px 12px; font-size: 13px;">
+  View
+</a>
+            </td>
+          </tr>
+        `).join('');
+
+              document.getElementById('bookings-tbody').innerHTML = html;
+              document.getElementById('table-container').style.display = 'block';
+            } else {
+              document.getElementById('empty-state').style.display = 'block';
+            }
+          })
+          .catch(error => {
+            document.getElementById('loading').style.display = 'none';
+            alert('Error loading bookings: ' + error.message);
+          });
+      </script>
+    </div>
+
+</body>
+
+</html>

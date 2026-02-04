@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Users Management - AutoRent</title>
+  <style>
+    .page-header {
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .page-header h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .page-header p {
+      color: #7f8c8d;
+      font-size: 16px;
+    }
+
+    .users-table {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background: #34495e;
+      color: white;
+    }
+
+    th {
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    td {
+      padding: 15px;
+      border-bottom: 1px solid #ecf0f1;
+    }
+
+    tbody tr:hover {
+      background: #f8f9fa;
+    }
+
+    .role-badge {
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .role-customer {
+      background: #3498db;
+      color: white;
+    }
+
+    .role-owner {
+      background: #f39c12;
+      color: white;
+    }
+
+    .role-admin {
+      background: #e74c3c;
+      color: white;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #3498db;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #7f8c8d;
+    }
+
+    .empty-state-icon {
+      font-size: 60px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .users-table {
+        overflow-x: auto;
+      }
+
+      table {
+        min-width: 700px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <%- include('layout', { body: '' }) %>
+
+    <div class="page-header">
+      <div>
+        <h1>👥 Users Management</h1>
+        <p>Manage all users in the system</p>
+      </div>
+      <button onclick="alert('Add user feature coming soon!')">➕ Add User</button>
+    </div>
+
+    <div class="users-table">
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Role</th>
+            <th>Joined</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (users && users.length> 0) { %>
+            <% users.forEach(user=> { %>
+              <tr>
+                <td>
+                  <div class="user-info">
+                    <div class="user-avatar">
+                      <%= user.name.charAt(0).toUpperCase() %>
+                    </div>
+                    <strong>
+                      <%= user.name %>
+                    </strong>
+                  </div>
+                </td>
+                <td>
+                  <%= user.email %>
+                </td>
+                <td>
+                  <%= user.phone || 'N/A' %>
+                </td>
+                <td>
+                  <span class="role-badge role-<%= user.role.toLowerCase() %>">
+                    <%= user.role %>
+                  </span>
+                </td>
+                <td>
+                  <%= new Date(user.createdAt).toLocaleDateString() %>
+                </td>
+                <td>
+                  <a href="/user-detail?id=<%= user._id %>"
+                    style="padding: 6px 12px; font-size: 13px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block;">
+                    View
+                  </a>
+                </td>
+              </tr>
+              <% }) %>
+                <% } else { %>
+                  <tr>
+                    <td colspan="6">
+                      <div class="empty-state">
+                        <div class="empty-state-icon">👥</div>
+                        <h3>No users found</h3>
+                        <p>There are no users in the system yet.</p>
+                      </div>
+                    </td>
+                  </tr>
+                  <% } %>
+        </tbody>
+      </table>
+    </div>
+
+</body>
+
+</html>
