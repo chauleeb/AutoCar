@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Profile - AutoRent</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .profile-container { max-width: 900px; margin: 0 auto; }
+    .page-header { margin-bottom: 40px; text-align: center; }
+    .page-header h1 { font-size: 42px; margin-bottom: 15px; font-weight: 800; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .page-header p { color: #718096; font-size: 18px; }
+    .profile-card { background: white; border-radius: 24px; padding: 45px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08); margin-bottom: 30px; border: 1px solid rgba(0, 0, 0, 0.05); }
+    .profile-header { display: flex; align-items: center; gap: 35px; margin-bottom: 45px; padding-bottom: 35px; border-bottom: 2px solid #f7fafc; }
+    .profile-avatar { width: 130px; height: 130px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; font-size: 65px; color: white; flex-shrink: 0; box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3); }
+    .profile-info { flex: 1; }
+    .profile-name { font-size: 36px; font-weight: 800; color: #1a1a2e; margin-bottom: 12px; }
+    .profile-email { font-size: 18px; color: #718096; margin-bottom: 18px; }
+    .role-badge { display: inline-block; padding: 10px 22px; border-radius: 50px; font-size: 14px; font-weight: 700; text-transform: uppercase; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+    .role-admin { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; }
+    .role-customer { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; }
+    .role-owner { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; }
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+    .info-item { background: linear-gradient(135deg, #f7fafc 0%, #e2e8f0 100%); padding: 25px; border-radius: 16px; }
+    .info-label { font-size: 14px; color: #718096; font-weight: 600; margin-bottom: 10px; }
+    .info-value { font-size: 18px; color: #1a1a2e; font-weight: 700; }
+    @media (max-width: 768px) { .profile-header { flex-direction: column; text-align: center; } .profile-card { padding: 30px 25px; } }
+  </style>
+</head>
+<body>
+  <%- include('layout', { body: '' }) %>
+  <div class="profile-container">
+    <div class="page-header">
+      <h1>👤 My Profile</h1>
+      <p>View and manage your account information</p>
+    </div>
+    <div id="loading" style="text-align: center; padding: 60px;"><div style="border: 6px solid #f3f4f6; border-top: 6px solid #667eea; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div><p style="color: #667eea; font-weight: 600;">Loading profile...</p></div>
+    <div id="profile-content" style="display: none;">
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="profile-avatar">👤</div>
+          <div class="profile-info">
+            <div class="profile-name" id="profile-name"></div>
+            <div class="profile-email" id="profile-email"></div>
+            <span class="role-badge" id="profile-role"></span>
+          </div>
+        </div>
+        <div class="info-grid">
+          <div class="info-item"><div class="info-label">📧 Email</div><div class="info-value" id="detail-email"></div></div>
+          <div class="info-item"><div class="info-label">📞 Phone</div><div class="info-value" id="detail-phone"></div></div>
+          <div class="info-item"><div class="info-label">🎭 Role</div><div class="info-value" id="detail-role"></div></div>
+          <div class="info-item"><div class="info-label">📅 Member Since</div><div class="info-value" id="detail-joined"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      if (!user.name) { window.location.href = '/login'; return; }
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('profile-name').textContent = user.name;
+      document.getElementById('profile-email').textContent = user.email;
+      document.getElementById('profile-role').textContent = user.role;
+      document.getElementById('profile-role').className = 'role-badge role-' + user.role.toLowerCase();
+      document.getElementById('detail-email').textContent = user.email;
+      document.getElementById('detail-phone').textContent = user.phone || 'Not provided';
+      document.getElementById('detail-role').textContent = user.role;
+      document.getElementById('detail-joined').textContent = new Date(user.createdAt).toLocaleDateString();
+      document.getElementById('profile-content').style.display = 'block';
+    });
+  </script>
+</body>
+</html>

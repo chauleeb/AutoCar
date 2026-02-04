@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>All Bookings - AutoRent</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .page-header { margin-bottom: 40px; text-align: center; }
+    .page-header h1 { font-size: 42px; margin-bottom: 15px; font-weight: 800; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .page-header p { color: #718096; font-size: 18px; }
+    .bookings-table { background: white; border-radius: 24px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08); overflow: hidden; border: 1px solid rgba(0, 0, 0, 0.05); }
+    table { width: 100%; border-collapse: collapse; }
+    th { background: linear-gradient(135deg, #f7fafc 0%, #e2e8f0 100%); padding: 20px; text-align: left; font-weight: 700; color: #1a1a2e; font-size: 15px; }
+    td { padding: 20px; border-top: 1px solid #f3f4f6; color: #4a5568; font-size: 15px; }
+    tr:hover { background: #f7fafc; }
+    .status-badge { padding: 6px 16px; border-radius: 50px; font-size: 12px; font-weight: 700; text-transform: uppercase; }
+    .status-pending { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; }
+    .status-confirmed { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; }
+    .status-active { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; }
+    .status-completed { background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%); color: white; }
+    .status-cancelled { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; }
+    .view-btn { padding: 8px 18px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; text-decoration: none; display: inline-block; transition: all 0.3s ease; }
+    .view-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3); }
+    @media (max-width: 768px) { .bookings-table { overflow-x: auto; } th, td { padding: 15px 12px; font-size: 14px; } }
+  </style>
+</head>
+<body>
+  <%- include('layout', { body: '' }) %>
+  <div class="page-header">
+    <h1>📅 All Bookings</h1>
+    <p>View and manage all car bookings</p>
+  </div>
+  <div id="loading" style="text-align: center; padding: 60px;"><div style="border: 6px solid #f3f4f6; border-top: 6px solid #667eea; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div><p style="color: #667eea; font-weight: 600;">Loading bookings...</p></div>
+  <div id="bookings-container" class="bookings-table" style="display: none;"><table><thead><tr><th>🚗 Car</th><th>👤 Customer</th><th>📅 Dates</th><th>💰 Price</th><th>📊 Status</th><th>🔧 Actions</th></tr></thead><tbody id="bookings-body"></tbody></table></div>
+  <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+  <script>
+    document.addEventListener('DOMContentLoaded', async function() {
+      const token = localStorage.getItem('token');
+      if (!token) { window.location.href = '/login'; return; }
+      try {
+        const response = await fetch('/api/v1/bookings', { headers: { 'Authorization': `Bearer ${token}` } });
+        const result = await response.json();
+        document.getElementById('loading').style.display = 'none';
+        if (result.success && result.data.length > 0) {
+          document.getElementById('bookings-body').innerHTML = result.data.map(booking => `
+            <tr>
+              <td><strong>${booking.car?.brand || 'N/A'} ${booking.car?.model || ''}</strong></td>
+              <td>${booking.user?.name || 'Unknown'}</td>
+              <td>${new Date(booking.startDate).toLocaleDateString()} - ${new Date(booking.endDate).toLocaleDateString()}</td>
+              <td><strong style="color: #10b981; font-size: 18px;">$${booking.totalPrice || 0}</strong></td>
+              <td><span class="status-badge status-${booking.status.toLowerCase()}">${booking.status}</span></td>
+              <td><a href="/booking-detail/${booking._id}" class="view-btn">View Details</a></td>
+            </tr>
+          `).join('');
+          document.getElementById('bookings-container').style.display = 'block';
+        }
+      } catch (error) {
+        document.getElementById('loading').innerHTML = '<p style="color: #ef4444;">Error loading bookings</p>';
+      }
+    });
+  </script>
+</body>
+</html>

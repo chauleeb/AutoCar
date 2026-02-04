@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - AutoRent</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+      animation: pulse 15s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.1);
+      }
+    }
+
+    .register-container {
+      background: white;
+      padding: 50px;
+      border-radius: 30px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 550px;
+      position: relative;
+      z-index: 1;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .logo-icon {
+      width: 90px;
+      height: 90px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 45px;
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    h1 {
+      text-align: center;
+      color: #1a1a2e;
+      margin-bottom: 12px;
+      font-size: 32px;
+      font-weight: 800;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #718096;
+      margin-bottom: 35px;
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      color: #1a1a2e;
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .optional-label {
+      color: #a0aec0;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 14px 18px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      background: #f7fafc;
+    }
+
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+      background: white;
+    }
+
+    select {
+      cursor: pointer;
+    }
+
+    .btn-register {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 15px;
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-register:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-register:active {
+      transform: translateY(0);
+    }
+
+    .alert {
+      padding: 14px 18px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .alert-error {
+      background: #fee2e2;
+      color: #dc2626;
+      border: 2px solid #fecaca;
+    }
+
+    .alert-success {
+      background: #d1fae5;
+      color: #059669;
+      border: 2px solid #a7f3d0;
+    }
+
+    .divider {
+      text-align: center;
+      margin: 30px 0;
+      color: #a0aec0;
+      font-size: 14px;
+      font-weight: 600;
+      position: relative;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 42%;
+      height: 2px;
+      background: linear-gradient(to right, transparent, #e2e8f0, transparent);
+    }
+
+    .divider::before {
+      left: 0;
+    }
+
+    .divider::after {
+      right: 0;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 25px;
+      font-size: 15px;
+      color: #718096;
+    }
+
+    .login-link a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 700;
+      transition: color 0.2s;
+    }
+
+    .login-link a:hover {
+      color: #764ba2;
+      text-decoration: underline;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .spinner {
+      border: 4px solid #f3f4f6;
+      border-top: 4px solid #667eea;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 12px;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loading p {
+      color: #667eea;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .register-container {
+        padding: 35px 25px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="register-container">
+    <div class="logo">
+      <div class="logo-icon">🚗</div>
+      <h1>Create Account</h1>
+      <p class="subtitle">Join AutoRent and start renting today</p>
+    </div>
+
+    <!-- Alert Message -->
+    <div id="alert" style="display: none;"></div>
+
+    <!-- Register Form -->
+    <form id="registerForm">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Create a strong password" required
+          minlength="6">
+      </div>
+
+      <div class="form-group">
+        <label for="phone">
+          Phone Number
+          <span class="optional-label">(Optional)</span>
+        </label>
+        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number">
+      </div>
+
+      <div class="form-group">
+        <label for="role">Account Type</label>
+        <select id="role" name="role">
+          <option value="CUSTOMER">🚗 Customer (Rent cars)</option>
+          <option value="OWNER">👤 Car Owner (List cars)</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-register">
+        ✨ Create Account
+      </button>
+
+      <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Creating your account...</p>
+      </div>
+    </form>
+
+    <div class="divider">OR</div>
+
+    <div class="login-link">
+      Already have an account? <a href="/login">Login here</a>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('registerForm');
+    const alertBox = document.getElementById('alert');
+    const loading = document.getElementById('loading');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const phone = document.getElementById('phone').value;
+      const role = document.getElementById('role').value;
+
+      alertBox.style.display = 'none';
+      loading.style.display = 'block';
+
+      try {
+        const response = await fetch('/api/v1/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            password,
+            phone: phone || undefined,
+            role
+          })
+        });
+
+        const data = await response.json();
+        loading.style.display = 'none';
+
+        if (response.ok) {
+          showAlert('✅ Account created successfully! Redirecting to login...', 'success');
+
+          setTimeout(() => {
+            window.location.href = '/login';
+          }, 2000);
+        } else {
+          showAlert('❌ ' + (data.message || 'Registration failed. Please try again.'), 'error');
+        }
+      } catch (error) {
+        loading.style.display = 'none';
+        showAlert('❌ Network error. Please check your connection.', 'error');
+        console.error('Registration error:', error);
+      }
+    });
+
+    function showAlert(message, type) {
+      alertBox.textContent = message;
+      alertBox.className = `alert alert-${type}`;
+      alertBox.style.display = 'flex';
+    }
+  </script>
+
+</body>
+
+</html>

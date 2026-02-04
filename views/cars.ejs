@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Available Cars - AutoRent</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .page-header {
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .page-header h1 {
+      font-size: 42px;
+      margin-bottom: 15px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .page-header p {
+      color: #718096;
+      font-size: 18px;
+    }
+
+    /* Loading State */
+    .loading-container {
+      text-align: center;
+      padding: 80px 20px;
+    }
+
+    .loading-spinner {
+      border: 6px solid #f3f4f6;
+      border-top: 6px solid #667eea;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loading-text {
+      color: #667eea;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    /* Cars Grid */
+    .cars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 35px;
+    }
+
+    .car-card {
+      background: white;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+      transition: all 0.4s ease;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .car-card:hover {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 20px 50px rgba(102, 126, 234, 0.25);
+    }
+
+    .car-image {
+      width: 100%;
+      height: 220px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .car-image::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    }
+
+    .car-content {
+      padding: 30px;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 8px 18px;
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .status-available {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+    }
+
+    .status-rented {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: white;
+    }
+
+    .status-maintenance {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: white;
+    }
+
+    .car-title {
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 18px;
+      color: #1a1a2e;
+    }
+
+    .car-detail {
+      color: #718096;
+      font-size: 15px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .car-detail strong {
+      color: #4a5568;
+      font-weight: 600;
+    }
+
+    .car-price {
+      font-size: 38px;
+      font-weight: 800;
+      color: #10b981;
+      margin: 25px 0;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .car-price small {
+      font-size: 16px;
+      color: #718096;
+      font-weight: 500;
+    }
+
+    .book-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .book-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+    }
+
+    .book-btn:disabled {
+      background: linear-gradient(135deg, #a0aec0 0%, #718096 100%);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 100px 30px;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .empty-state-icon {
+      font-size: 120px;
+      margin-bottom: 30px;
+      opacity: 0.6;
+      filter: grayscale(0.3);
+    }
+
+    .empty-state h2 {
+      font-size: 32px;
+      margin-bottom: 18px;
+      color: #1a1a2e;
+      font-weight: 700;
+    }
+
+    .empty-state p {
+      color: #718096;
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    /* Error State */
+    .error-state {
+      text-align: center;
+      padding: 80px 30px;
+      background: #fee2e2;
+      border-radius: 24px;
+      border: 2px solid #fecaca;
+    }
+
+    .error-icon {
+      font-size: 80px;
+      margin-bottom: 20px;
+    }
+
+    .error-message {
+      color: #dc2626;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .page-header h1 {
+        font-size: 32px;
+      }
+
+      .cars-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+
+      .car-card {
+        border-radius: 20px;
+      }
+
+      .car-image {
+        height: 200px;
+        font-size: 70px;
+      }
+
+      .car-content {
+        padding: 25px;
+      }
+
+      .car-title {
+        font-size: 22px;
+      }
+
+      .car-price {
+        font-size: 32px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <%- include('layout', { body: '' }) %>
+
+  <div class="page-header">
+    <h1>🚗 Available Cars</h1>
+    <p>Browse and book from our premium collection of rental cars</p>
+  </div>
+
+  <!-- Loading State -->
+  <div id="loading" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p class="loading-text">Loading amazing cars for you...</p>
+  </div>
+
+  <!-- Cars Container -->
+  <div id="cars-container" class="cars-grid" style="display: none;"></div>
+
+  <!-- Empty State -->
+  <div id="empty-state" class="empty-state" style="display: none;">
+    <div class="empty-state-icon">🚗</div>
+    <h2>No Cars Available</h2>
+    <p>Check back later for available cars or contact support for assistance.</p>
+  </div>
+
+  <!-- Error State -->
+  <div id="error-state" class="error-state" style="display: none;">
+    <div class="error-icon">⚠️</div>
+    <p class="error-message" id="error-message"></p>
+  </div>
+
+  <script>
+    // Fetch cars from API
+    fetch('/api/v1/cars')
+      .then(response => response.json())
+      .then(result => {
+        document.getElementById('loading').style.display = 'none';
+
+        if (result.success && result.data.length > 0) {
+          const html = result.data.map(car => `
+          <div class="car-card">
+            <div class="car-image">
+              🚗
+            </div>
+            
+            <div class="car-content">
+              <span class="status-badge status-${car.status.toLowerCase()}">
+                ${car.status}
+              </span>
+              
+              <div class="car-title">${car.brand} ${car.model}</div>
+              
+              <div class="car-detail">
+                <span>🔑</span>
+                <strong>Plate:</strong> ${car.licensePlate}
+              </div>
+              
+              <div class="car-price">
+                <span>$${car.pricePerDay}</span>
+                <small>/ day</small>
+              </div>
+              
+              ${car.status === 'AVAILABLE' ? `
+                <a href="/booking/${car._id}" class="book-btn">
+                  <span>📅</span>
+                  <span>Book Now</span>
+                </a>
+              ` : `
+                <button class="book-btn" disabled>
+                  <span>⛔</span>
+                  <span>Not Available</span>
+                </button>
+              `}
+            </div>
+          </div>
+        `).join('');
+
+          document.getElementById('cars-container').innerHTML = html;
+          document.getElementById('cars-container').style.display = 'grid';
+        } else {
+          document.getElementById('empty-state').style.display = 'block';
+        }
+      })
+      .catch(error => {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('error-state').style.display = 'block';
+        document.getElementById('error-message').textContent =
+          'Error loading cars: ' + error.message;
+      });
+  </script>
+
+</body>
+
+</html>
