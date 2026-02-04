@@ -281,9 +281,9 @@
 
                     // ✅ Redirect dựa trên role
                     setTimeout(() => {
-                        const userRole = data.user?.role || 'CUSTOMER';
+                        const userRole = data.user?.role || 'customer';
 
-                        if (userRole === 'ADMIN') {
+                        if (userRole === 'admin') {
                             window.location.href = '/admin-dashboard';  // Admin → Dashboard
                         } else if (userRole === 'OWNER') {
                             window.location.href = '/cars';  // Owner → Cars (hoặc page khác)
