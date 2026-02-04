@@ -1,59 +1,198 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Users Management - AutoRent</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    .page-header { margin-bottom: 40px; text-align: center; }
-    .page-header h1 { font-size: 42px; margin-bottom: 15px; font-weight: 800; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .page-header p { color: #718096; font-size: 18px; }
-    .users-table { background: white; border-radius: 24px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08); overflow: hidden; border: 1px solid rgba(0, 0, 0, 0.05); }
-    table { width: 100%; border-collapse: collapse; }
-    th { background: linear-gradient(135deg, #f7fafc 0%, #e2e8f0 100%); padding: 20px; text-align: left; font-weight: 700; color: #1a1a2e; font-size: 15px; }
-    td { padding: 20px; border-top: 1px solid #f3f4f6; color: #4a5568; font-size: 15px; }
-    tr:hover { background: #f7fafc; }
-    .role-badge { padding: 6px 16px; border-radius: 50px; font-size: 12px; font-weight: 700; text-transform: uppercase; }
-    .role-admin { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; }
-    .role-customer { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; }
-    .role-owner { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; }
-    .view-btn { padding: 8px 18px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; transition: all 0.3s ease; text-decoration: none; display: inline-block; }
-    .view-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3); }
-    @media (max-width: 768px) { .users-table { overflow-x: auto; } th, td { padding: 15px 12px; font-size: 14px; } }
+    .page-header {
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .page-header h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .page-header p {
+      color: #7f8c8d;
+      font-size: 16px;
+    }
+
+    .users-table {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background: #34495e;
+      color: white;
+    }
+
+    th {
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    td {
+      padding: 15px;
+      border-bottom: 1px solid #ecf0f1;
+    }
+
+    tbody tr:hover {
+      background: #f8f9fa;
+    }
+
+    .role-badge {
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .role-customer {
+      background: #3498db;
+      color: white;
+    }
+
+    .role-owner {
+      background: #f39c12;
+      color: white;
+    }
+
+    .role-admin {
+      background: #e74c3c;
+      color: white;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #3498db;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #7f8c8d;
+    }
+
+    .empty-state-icon {
+      font-size: 60px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .users-table {
+        overflow-x: auto;
+      }
+
+      table {
+        min-width: 700px;
+      }
+    }
   </style>
 </head>
+
 <body>
+
   <%- include('layout', { body: '' }) %>
-  <div class="page-header">
-    <h1>👥 Users Management</h1>
-    <p>View and manage all registered users</p>
-  </div>
-  <div id="loading" style="text-align: center; padding: 60px;"><div style="border: 6px solid #f3f4f6; border-top: 6px solid #667eea; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div><p style="color: #667eea; font-weight: 600;">Loading users...</p></div>
-  <div id="users-container" class="users-table" style="display: none;"><table><thead><tr><th>👤 Name</th><th>📧 Email</th><th>🎭 Role</th><th>📅 Joined</th><th>🔧 Actions</th></tr></thead><tbody id="users-body"></tbody></table></div>
-  <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
-  <script>
-    document.addEventListener('DOMContentLoaded', async function() {
-      const token = localStorage.getItem('token');
-      if (!token) { window.location.href = '/login'; return; }
-      try {
-        const response = await fetch('/api/v1/users', { headers: { 'Authorization': `Bearer ${token}` } });
-        const result = await response.json();
-        document.getElementById('loading').style.display = 'none';
-        if (result.success && result.data.length > 0) {
-          document.getElementById('users-body').innerHTML = result.data.map(user => `
-            <tr>
-              <td><strong>${user.name}</strong></td>
-              <td>${user.email}</td>
-              <td><span class="role-badge role-${user.role.toLowerCase()}">${user.role}</span></td>
-              <td>${new Date(user.createdAt).toLocaleDateString()}</td>
-              <td><a href="/user-detail/${user._id}" class="view-btn">View Details</a></td>
-            </tr>
-          `).join('');
-          document.getElementById('users-container').style.display = 'block';
-        }
-      } catch (error) {
-        document.getElementById('loading').innerHTML = '<p style="color: #ef4444;">Error loading users</p>';
-      }
-    });
-  </script>
+
+    <div class="page-header">
+      <div>
+        <h1>👥 Users Management</h1>
+        <p>Manage all users in the system</p>
+      </div>
+      <button onclick="alert('Add user feature coming soon!')">➕ Add User</button>
+    </div>
+
+    <div class="users-table">
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Role</th>
+            <th>Joined</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (users && users.length> 0) { %>
+            <% users.forEach(user=> { %>
+              <tr>
+                <td>
+                  <div class="user-info">
+                    <div class="user-avatar">
+                      <%= user.name.charAt(0).toUpperCase() %>
+                    </div>
+                    <strong>
+                      <%= user.name %>
+                    </strong>
+                  </div>
+                </td>
+                <td>
+                  <%= user.email %>
+                </td>
+                <td>
+                  <%= user.phone || 'N/A' %>
+                </td>
+                <td>
+                  <span class="role-badge role-<%= user.role.toLowerCase() %>">
+                    <%= user.role %>
+                  </span>
+                </td>
+                <td>
+                  <%= new Date(user.createdAt).toLocaleDateString() %>
+                </td>
+                <td>
+                  <a href="/user-detail?id=<%= user._id %>"
+                    style="padding: 6px 12px; font-size: 13px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block;">
+                    View
+                  </a>
+                </td>
+              </tr>
+              <% }) %>
+                <% } else { %>
+                  <tr>
+                    <td colspan="6">
+                      <div class="empty-state">
+                        <div class="empty-state-icon">👥</div>
+                        <h3>No users found</h3>
+                        <p>There are no users in the system yet.</p>
+                      </div>
+                    </td>
+                  </tr>
+                  <% } %>
+        </tbody>
+      </table>
+    </div>
+
 </body>
+
 </html>

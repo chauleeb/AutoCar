@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AutoRent System</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -14,20 +13,15 @@
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #f8f9fa;
     }
 
-    /* Navbar Styles */
+    /* Navbar */
     nav {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      background: #2c3e50;
+      padding: 0;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .nav-container {
@@ -36,263 +30,156 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 30px;
-      height: 70px;
+      padding: 0 20px;
     }
 
     .nav-brand {
-      color: #1a1a2e;
-      font-size: 24px;
-      font-weight: 800;
+      color: white;
+      font-size: 22px;
+      font-weight: bold;
       text-decoration: none;
+      padding: 15px 0;
       display: flex;
       align-items: center;
-      gap: 12px;
-      transition: transform 0.2s;
-    }
-
-    .nav-brand:hover {
-      transform: scale(1.05);
-    }
-
-    .nav-brand .brand-icon {
-      font-size: 32px;
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-    }
-
-    .nav-brand .brand-text {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      gap: 8px;
     }
 
     .nav-menu {
       display: flex;
-      gap: 8px;
+      gap: 5px;
       align-items: center;
     }
 
     .nav-link {
-      color: #4a5568;
+      color: #ecf0f1;
       text-decoration: none;
-      padding: 10px 18px;
-      border-radius: 10px;
+      padding: 15px 18px;
       display: flex;
       align-items: center;
-      gap: 8px;
-      transition: all 0.3s ease;
+      gap: 6px;
+      transition: background 0.2s;
       font-size: 15px;
-      font-weight: 500;
-      position: relative;
     }
 
     .nav-link:hover {
-      background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
-      color: #667eea;
-      transform: translateY(-2px);
+      background: #34495e;
     }
 
-    .nav-link.active {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-    }
-
-    /* User Info Styles */
+    /* ✅ THÊM CSS CHO USER INFO */
     .nav-user-info {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 8px 18px;
-      background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
-      border-radius: 50px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: 2px solid transparent;
-    }
-
-    .nav-user-info:hover {
-      background: linear-gradient(135deg, #667eea25 0%, #764ba225 100%);
-      border-color: #667eea50;
-      transform: scale(1.05);
+      gap: 10px;
+      padding: 8px 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 25px;
+      color: white;
     }
 
     .user-avatar {
-      width: 38px;
-      height: 38px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #3498db;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
-      color: white;
-      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+      font-size: 16px;
     }
 
     .user-name {
-      font-size: 15px;
-      font-weight: 600;
-      color: #1a1a2e;
+      font-size: 14px;
+      font-weight: 500;
     }
 
     .btn-logout {
-      padding: 10px 20px;
-      background: linear-gradient(135deg, #fc5c7d 0%, #6a82fb 100%);
+      padding: 8px 16px;
+      background: #e74c3c;
       color: white;
       border: none;
-      border-radius: 50px;
+      border-radius: 5px;
       cursor: pointer;
       font-size: 14px;
-      font-weight: 600;
-      transition: all 0.3s ease;
+      font-weight: 500;
+      transition: background 0.2s;
       display: flex;
       align-items: center;
-      gap: 8px;
-      box-shadow: 0 4px 12px rgba(252, 92, 125, 0.3);
+      gap: 6px;
     }
 
     .btn-logout:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(252, 92, 125, 0.4);
+      background: #c0392b;
     }
 
-    .btn-logout:active {
-      transform: translateY(0);
-    }
-
-    /* Container Styles */
+    /* Container */
     .container {
       max-width: 1400px;
       margin: 0 auto;
-      padding: 40px 30px;
+      padding: 30px 20px;
     }
 
-    /* Card Styles */
+    /* Card */
     .card {
       background: white;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-      border: 1px solid rgba(0, 0, 0, 0.05);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
-    /* Button Styles */
+    /* Button */
     button,
     .btn {
-      padding: 12px 24px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 10px 20px;
+      background: #3498db;
       color: white;
       border: none;
-      border-radius: 12px;
+      border-radius: 5px;
       cursor: pointer;
       font-size: 15px;
-      font-weight: 600;
-      transition: all 0.3s ease;
+      font-weight: 500;
+      transition: background 0.2s;
       text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+      display: inline-block;
     }
 
     button:hover,
     .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+      background: #2980b9;
     }
 
-    button:active,
-    .btn:active {
-      transform: translateY(0);
-    }
-
-    /* Form Input Styles */
     input,
     select,
     textarea {
-      padding: 12px 16px;
-      border: 2px solid #e2e8f0;
-      border-radius: 12px;
-      font-size: 15px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
       width: 100%;
-      font-family: 'Inter', sans-serif;
-      transition: all 0.3s ease;
-      background: white;
     }
 
-    input:focus,
-    select:focus,
-    textarea:focus {
-      outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-    }
-
-    /* Typography */
     h1,
     h2,
     h3 {
-      color: #1a1a2e;
-      font-weight: 700;
+      color: #2c3e50;
     }
 
-    h1 {
-      font-size: 36px;
-      margin-bottom: 12px;
-    }
-
-    h2 {
-      font-size: 28px;
-      margin-bottom: 10px;
-    }
-
-    h3 {
-      font-size: 22px;
-      margin-bottom: 8px;
-    }
-
-    /* Responsive Design */
+    /* Responsive */
     @media (max-width: 768px) {
-      .nav-container {
-        padding: 0 20px;
-        height: auto;
-        flex-direction: column;
-        gap: 15px;
-        padding-top: 15px;
-        padding-bottom: 15px;
-      }
-
       .nav-menu {
         flex-wrap: wrap;
-        justify-content: center;
-        width: 100%;
       }
 
       .nav-link {
-        padding: 8px 14px;
+        padding: 12px 15px;
         font-size: 14px;
       }
 
       .nav-user-info {
-        padding: 6px 14px;
+        padding: 8px 12px;
       }
 
       .user-name {
         display: none;
-      }
-
-      .container {
-        padding: 25px 20px;
-      }
-
-      h1 {
-        font-size: 28px;
-      }
-
-      h2 {
-        font-size: 24px;
       }
     }
   </style>
@@ -303,60 +190,35 @@
   <nav>
     <div class="nav-container">
       <a href="/" class="nav-brand">
-        <span class="brand-icon">🚗</span>
-        <span class="brand-text">AutoRent</span>
+        🚗 AutoRent
       </a>
 
       <div class="nav-menu">
-        <!-- Customer/General User Links -->
-        <a href="/" class="nav-link" id="home-link">
-          <span>🏠</span>
-          <span>Home</span>
-        </a>
-        <a href="/cars" class="nav-link" id="cars-link">
-          <span>🚘</span>
-          <span>Cars</span>
-        </a>
-        <a href="/profile" class="nav-link" id="profile-link">
-          <span>📋</span>
-          <span>My Bookings</span>
-        </a>
+        <!-- ✅ Links cho Customer/General Users -->
+        <a href="/" class="nav-link" id="home-link">🏠 Home</a>
+        <a href="/cars" class="nav-link" id="cars-link">🚗 Cars</a>
+        <a href="/profile" class="nav-link" id="profile-link">📋 My Bookings</a>
 
-        <!-- Admin Links -->
-        <a href="/bookings" class="nav-link" id="bookings-link" style="display: none;">
-          <span>📅</span>
-          <span>Bookings</span>
-        </a>
-        <a href="/users" class="nav-link" id="users-link" style="display: none;">
-          <span>👥</span>
-          <span>Users</span>
-        </a>
-        <a href="/admin-dashboard" class="nav-link" id="admin-link" style="display: none;">
-          <span>⚙️</span>
-          <span>Dashboard</span>
-        </a>
+        <!-- ✅ Links cho Admin -->
+        <a href="/bookings" class="nav-link" id="bookings-link" style="display: none;">📅 Bookings</a>
+        <a href="/users" class="nav-link" id="users-link" style="display: none;">👥 Users</a>
+        <!-- ✅Chỉ hiện link Admin khi user là ADMIN -->
+        <a href="/admin-dashboard" class="nav-link" id="admin-link" style="display: none;">⚙️ Admin</a>
 
-        <!-- Auth Links (Before Login) -->
-        <div id="auth-links" style="display: flex; gap: 8px;">
-          <a href="/login" class="nav-link">
-            <span>🔐</span>
-            <span>Login</span>
-          </a>
-          <a href="/register" class="nav-link">
-            <span>✨</span>
-            <span>Register</span>
-          </a>
+        <!--  PHẦN NÀY HIỆN KHI CHƯA LOGIN -->
+        <div id="auth-links" style="display: flex; gap: 5px;">
+          <a href="/login" class="nav-link">🔐 Login</a>
+          <a href="/register" class="nav-link">✨ Register</a>
         </div>
 
-        <!-- User Menu (After Login) -->
-        <div id="user-menu" style="display: none; gap: 12px; align-items: center;">
-          <div class="nav-user-info" onclick="goToProfile()">
+        <!-- ✅ PHẦN NÀY HIỆN KHI ĐÃ LOGIN -->
+        <div id="user-menu" style="display: none; gap: 10px; align-items: center;">
+          <div class="nav-user-info" onclick="goToProfile()" style="cursor: pointer;">
             <div class="user-avatar">👤</div>
             <span class="user-name" id="userName">User</span>
           </div>
           <button class="btn-logout" onclick="handleLogout()">
-            <span>🚪</span>
-            <span>Logout</span>
+            🚪 Logout
           </button>
         </div>
       </div>
@@ -367,11 +229,11 @@
     <%- body %>
   </div>
 
+  <!-- ✅ THÊM JAVASCRIPT ĐỂ CHECK LOGIN STATUS -->
   <script>
-    // Update navbar based on login status
+    // Check login status khi page load
     document.addEventListener('DOMContentLoaded', function () {
       updateNavbar();
-      highlightActiveLink();
     });
 
     function updateNavbar() {
@@ -383,6 +245,7 @@
       const userName = document.getElementById('userName');
       const adminLink = document.getElementById('admin-link');
 
+      // ✅ Get các link elements
       const homeLink = document.getElementById('home-link');
       const carsLink = document.getElementById('cars-link');
       const profileLink = document.getElementById('profile-link');
@@ -390,11 +253,13 @@
       const usersLink = document.getElementById('users-link');
 
       if (token && user.name) {
+        // ✅ ĐÃ LOGIN
         authLinks.style.display = 'none';
         userMenu.style.display = 'flex';
         userName.textContent = user.name;
 
         if (user.role === 'ADMIN') {
+          // ✅ ADMIN - Hiện link admin, ẩn link customer
           homeLink.style.display = 'none';
           carsLink.style.display = 'none';
           profileLink.style.display = 'none';
@@ -402,6 +267,7 @@
           usersLink.style.display = 'flex';
           adminLink.style.display = 'flex';
         } else {
+          // ✅ CUSTOMER/OWNER - Hiện link customer, ẩn link admin
           homeLink.style.display = 'flex';
           carsLink.style.display = 'flex';
           profileLink.style.display = 'flex';
@@ -410,43 +276,40 @@
           adminLink.style.display = 'none';
         }
       } else {
+        // ❌ CHƯA LOGIN - Hiện tất cả link public
         authLinks.style.display = 'flex';
         userMenu.style.display = 'none';
         homeLink.style.display = 'flex';
         carsLink.style.display = 'flex';
-        profileLink.style.display = 'none';
+        profileLink.style.display = 'none';  // Ẩn My Bookings khi chưa login
         bookingsLink.style.display = 'none';
         usersLink.style.display = 'none';
         adminLink.style.display = 'none';
       }
     }
 
-    function highlightActiveLink() {
-      const currentPath = window.location.pathname;
-      document.querySelectorAll('.nav-link').forEach(link => {
-        if (link.getAttribute('href') === currentPath) {
-          link.classList.add('active');
-        }
-      });
-    }
-
     function handleLogout() {
+      // Confirm trước khi logout
       if (confirm('Are you sure you want to logout?')) {
+        // Xóa token và user info
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+
+        // Redirect về trang home
         window.location.href = '/';
       }
     }
 
-    function goToProfile() {
-      window.location.href = '/user-detail';
-    }
-
+    // Lắng nghe sự kiện storage để update navbar khi login từ tab khác
     window.addEventListener('storage', function (e) {
       if (e.key === 'token' || e.key === 'user') {
         updateNavbar();
       }
     });
+
+    function goToProfile() {
+  window.location.href = '/user-detail';
+}
   </script>
 
 </body>

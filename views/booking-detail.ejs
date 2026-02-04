@@ -1,92 +1,392 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Booking Details - AutoRent</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    .page-header { margin-bottom: 40px; text-align: center; }
-    .page-header h1 { font-size: 42px; margin-bottom: 15px; font-weight: 800; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .page-header p { color: #718096; font-size: 18px; }
-    .booking-container { max-width: 900px; margin: 0 auto; }
-    .back-link { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 30px; color: #667eea; text-decoration: none; font-size: 16px; font-weight: 600; padding: 10px 18px; border-radius: 12px; transition: all 0.3s ease; }
-    .back-link:hover { background: rgba(102, 126, 234, 0.1); transform: translateX(-5px); }
-    .detail-card { background: white; border-radius: 24px; padding: 45px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08); margin-bottom: 30px; border: 1px solid rgba(0, 0, 0, 0.05); }
-    .detail-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; padding-bottom: 25px; border-bottom: 2px solid #f7fafc; }
-    .detail-title { font-size: 32px; font-weight: 800; color: #1a1a2e; }
-    .status-badge { padding: 10px 22px; border-radius: 50px; font-size: 14px; font-weight: 700; text-transform: uppercase; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
-    .status-pending { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; }
-    .status-confirmed { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; }
-    .status-active { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; }
-    .status-completed { background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%); color: white; }
-    .status-cancelled { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; }
-    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 35px; }
-    .info-item { background: linear-gradient(135deg, #f7fafc 0%, #e2e8f0 100%); padding: 25px; border-radius: 16px; }
-    .info-label { font-size: 14px; color: #718096; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-    .info-value { font-size: 20px; color: #1a1a2e; font-weight: 700; }
-    .price-highlight { font-size: 36px; color: #10b981; font-weight: 800; }
-    .car-section { background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%); padding: 30px; border-radius: 16px; border: 2px solid #667eea30; }
-    .car-title { font-size: 24px; font-weight: 800; color: #1a1a2e; margin-bottom: 20px; }
-    @media (max-width: 768px) { .detail-card { padding: 30px 25px; } .detail-header { flex-direction: column; gap: 15px; align-items: flex-start; } .info-grid { grid-template-columns: 1fr; } }
+    .booking-container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .page-header {
+      margin-bottom: 40px;
+    }
+
+    .page-header h1 {
+      font-size: 36px;
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+
+    .page-header p {
+      color: #7f8c8d;
+      font-size: 16px;
+    }
+
+    .booking-card {
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+
+    .booking-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #ecf0f1;
+    }
+
+    .booking-id {
+      font-size: 28px;
+      font-weight: 700;
+      color: #2c3e50;
+    }
+
+    .status-badge {
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: 14px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: white;
+    }
+
+    .status-pending { background: #f39c12; }
+    .status-confirmed { background: #3498db; }
+    .status-active { background: #27ae60; }
+    .status-completed { background: #95a5a6; }
+    .status-cancelled { background: #e74c3c; }
+
+    .info-section {
+      margin-bottom: 40px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .info-label {
+      font-size: 13px;
+      color: #7f8c8d;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .info-value {
+      font-size: 17px;
+      color: #2c3e50;
+      font-weight: 600;
+    }
+
+    .price-highlight {
+      font-size: 32px;
+      color: #27ae60;
+      font-weight: 800;
+    }
+
+    .car-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 30px;
+      border-radius: 12px;
+      color: white;
+      margin-bottom: 30px;
+    }
+
+    .car-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 60px 20px;
+      color: #7f8c8d;
+    }
+
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #667eea;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .error-message {
+      text-align: center;
+      padding: 40px 20px;
+      color: #e74c3c;
+    }
+
+    .back-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #95a5a6;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
+
+    .back-btn:hover {
+      background: #7f8c8d;
+    }
+
+    @media (max-width: 768px) {
+      .booking-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+      }
+    }
   </style>
 </head>
 <body>
-  <%- include('layout', { body: '' }) %>
-  <div class="booking-container">
-    <a href="/bookings" class="back-link"><span>←</span><span>Back to Bookings</span></a>
+
+<%- include('layout', { body: '' }) %>
+
+<div class="booking-container">
+  <a href="/bookings" class="back-btn">← Back to All Bookings</a>
+
+  <!-- Loading -->
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Loading booking details...</p>
+  </div>
+
+  <!-- Error -->
+  <div id="error" class="error-message" style="display: none;">
+    <h3>❌ Error</h3>
+    <p id="error-message"></p>
+    <a href="/bookings" class="btn" style="margin-top: 20px;">Back to Bookings</a>
+  </div>
+
+  <!-- Booking Content -->
+  <div id="booking-content" style="display: none;">
     <div class="page-header">
       <h1>📋 Booking Details</h1>
       <p>View complete booking information</p>
     </div>
-    <div id="loading" style="text-align: center; padding: 60px;"><div style="border: 6px solid #f3f4f6; border-top: 6px solid #667eea; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div><p style="color: #667eea; font-weight: 600;">Loading booking details...</p></div>
-    <div id="booking-content" style="display: none;">
-      <div class="detail-card">
-        <div class="detail-header">
-          <div class="detail-title" id="booking-title"></div>
-          <span class="status-badge" id="booking-status"></span>
-        </div>
-        <div class="car-section">
-          <div class="car-title">🚗 Car Information</div>
-          <div class="info-grid">
-            <div class="info-item"><div class="info-label">🚙 Brand & Model</div><div class="info-value" id="car-brand"></div></div>
-            <div class="info-item"><div class="info-label">🔑 License Plate</div><div class="info-value" id="car-plate"></div></div>
+
+    <div class="booking-card">
+      <div class="booking-header">
+        <div class="booking-id" id="bookingId">#LOADING</div>
+        <span class="status-badge" id="bookingStatus">PENDING</span>
+      </div>
+
+      <!-- Car Information -->
+      <div class="car-section">
+        <div class="car-title" id="carInfo">🚗 Loading...</div>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">🔑 License Plate</div>
+            <div class="info-value" id="licensePlate">N/A</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">💵 Price Per Day</div>
+            <div class="info-value" id="pricePerDay">$0</div>
           </div>
         </div>
-        <div style="margin-top: 30px;" class="info-grid">
-          <div class="info-item"><div class="info-label">👤 Customer Name</div><div class="info-value" id="customer-name"></div></div>
-          <div class="info-item"><div class="info-label">📅 Start Date</div><div class="info-value" id="start-date"></div></div>
-          <div class="info-item"><div class="info-label">📅 End Date</div><div class="info-value" id="end-date"></div></div>
-          <div class="info-item"><div class="info-label">💰 Total Price</div><div class="info-value price-highlight" id="total-price"></div></div>
+      </div>
+
+      <!-- Customer Information -->
+      <div class="info-section">
+        <div class="section-title">👤 Customer Information</div>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Name</div>
+            <div class="info-value" id="customerName">N/A</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Email</div>
+            <div class="info-value" id="customerEmail">N/A</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Phone</div>
+            <div class="info-value" id="customerPhone">N/A</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Booking Information -->
+      <div class="info-section">
+        <div class="section-title">📅 Booking Information</div>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Start Date</div>
+            <div class="info-value" id="startDate">N/A</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">End Date</div>
+            <div class="info-value" id="endDate">N/A</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Duration</div>
+            <div class="info-value" id="duration">0 days</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">💰 Total Price</div>
+            <div class="info-value price-highlight" id="totalPrice">$0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Timestamps -->
+      <div class="info-section">
+        <div class="section-title">🕒 Timestamps</div>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Created At</div>
+            <div class="info-value" id="createdAt">N/A</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Last Updated</div>
+            <div class="info-value" id="updatedAt">N/A</div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
-  <script>
-    document.addEventListener('DOMContentLoaded', async function() {
-      const token = localStorage.getItem('token');
-      if (!token) { window.location.href = '/login'; return; }
-      const bookingId = window.location.pathname.split('/').pop();
-      try {
-        const response = await fetch(`/api/v1/bookings/${bookingId}`, { headers: { 'Authorization': `Bearer ${token}` } });
-        const result = await response.json();
-        document.getElementById('loading').style.display = 'none';
-        if (result.success) {
-          const b = result.data;
-          document.getElementById('booking-title').textContent = `Booking #${b._id.slice(-6)}`;
-          document.getElementById('booking-status').textContent = b.status;
-          document.getElementById('booking-status').className = 'status-badge status-' + b.status.toLowerCase();
-          document.getElementById('car-brand').textContent = `${b.car?.brand || 'N/A'} ${b.car?.model || ''}`;
-          document.getElementById('car-plate').textContent = b.car?.licensePlate || 'N/A';
-          document.getElementById('customer-name').textContent = b.user?.name || 'Unknown';
-          document.getElementById('start-date').textContent = new Date(b.startDate).toLocaleDateString();
-          document.getElementById('end-date').textContent = new Date(b.endDate).toLocaleDateString();
-          document.getElementById('total-price').textContent = '$' + (b.totalPrice || 0);
-          document.getElementById('booking-content').style.display = 'block';
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    loadBookingDetails();
+  });
+
+  async function loadBookingDetails() {
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+      showError('Please login to view booking details');
+      setTimeout(() => {
+        window.location.href = '/login';
+      }, 2000);
+      return;
+    }
+
+    // ✅ Lấy bookingId từ URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookingId = urlParams.get('id');
+
+    if (!bookingId) {
+      showError('Booking ID is missing');
+      return;
+    }
+
+    try {
+      // ✅ Gọi API GET /bookings/:id
+      const response = await fetch(`/api/v1/bookings/${bookingId}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
         }
-      } catch (error) {
-        document.getElementById('loading').innerHTML = '<p style="color: #ef4444;">Error loading booking details</p>';
+      });
+
+      const result = await response.json();
+
+      if (response.status === 401) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        showError('Session expired. Please login again.');
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 2000);
+        return;
       }
+
+      if (response.ok && result.success) {
+        displayBooking(result.data);
+      } else {
+        showError(result.error?.message || 'Failed to load booking');
+      }
+    } catch (error) {
+      showError('Network error: ' + error.message);
+      console.error('Load booking error:', error);
+    }
+  }
+
+  function displayBooking(booking) {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('booking-content').style.display = 'block';
+
+    // Booking ID & Status
+    document.getElementById('bookingId').textContent = `#${booking._id.toString().slice(-6).toUpperCase()}`;
+    const statusBadge = document.getElementById('bookingStatus');
+    statusBadge.textContent = booking.status;
+    statusBadge.className = `status-badge status-${booking.status.toLowerCase()}`;
+
+    // Car Information
+    const car = booking.carId;
+    document.getElementById('carInfo').textContent = `🚗 ${car.brand} ${car.model}`;
+    document.getElementById('licensePlate').textContent = car.licensePlate || 'N/A';
+    document.getElementById('pricePerDay').textContent = `$${car.pricePerDay || 0}`;
+
+    // Customer Information
+    const customer = booking.userId;
+    document.getElementById('customerName').textContent = customer.name || 'N/A';
+    document.getElementById('customerEmail').textContent = customer.email || 'N/A';
+    document.getElementById('customerPhone').textContent = customer.phone || 'N/A';
+
+    // Booking Information
+    const startDate = new Date(booking.startDate);
+    const endDate = new Date(booking.endDate);
+    const duration = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+
+    document.getElementById('startDate').textContent = startDate.toLocaleDateString('en-US', {
+      weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'
     });
-  </script>
+    document.getElementById('endDate').textContent = endDate.toLocaleDateString('en-US', {
+      weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'
+    });
+    document.getElementById('duration').textContent = `${duration} days`;
+    document.getElementById('totalPrice').textContent = `$${booking.totalPrice}`;
+
+    // Timestamps
+    const createdAt = new Date(booking.createdAt);
+    const updatedAt = new Date(booking.updatedAt);
+    document.getElementById('createdAt').textContent = createdAt.toLocaleString('en-US');
+    document.getElementById('updatedAt').textContent = updatedAt.toLocaleString('en-US');
+  }
+
+  function showError(message) {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('error').style.display = 'block';
+    document.getElementById('error-message').textContent = message;
+  }
+</script>
+
 </body>
 </html>
